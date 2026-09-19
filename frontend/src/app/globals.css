@@ -1,0 +1,334 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Sonotool design system — Apple HIG (web-translated). See docs/DESIGN_SYSTEM.md.
+   Dark-first creative tool: content (canvas) is dark, chrome defers to it.
+   Components must use the semantic utilities below (bg-surface, text-label, …),
+   never raw hex / pixel / zinc values. Themeable: dark is :root, light overrides.
+   ============================================================================ */
+
+@font-face {
+  font-family: 'Chirp';
+  src: url('/chirp-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Raw themeable values (dark = default) ───────────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --c-bg-base: #0a0a0a;
+  --c-bg-1: #1a1a1a;
+  --c-bg-2: #262626;
+  --c-overlay: #000000;
+
+  /* separators */
+  --c-sep: #303030;
+  --c-sep-subtle: #1f1f1f;
+
+  /* label text (hierarchy) */
+  --c-label-1: #ffffff;
+  --c-label-2: #d4d4d4;
+  --c-label-3: #9ca3af;
+  --c-label-4: #6b7280;
+
+  /* fills */
+  --c-fill-1: #ffffff;
+  --c-fill-2: #d4d4d4;
+  --c-fill-3: #9ca3af;
+  --c-fill-4: #4b5563;
+
+  /* tint — accent text / links / active indicators (reads as text on dark bg) */
+  --c-tint: #4a9eff;
+  --c-tint-hover: #3b8fe6;
+  --c-tint-pressed: #2d7bd4;
+
+  /* accent — filled primary-action surface w/ white text (AA-safe both themes) */
+  --c-accent: #2563eb;
+  --c-accent-hover: #1d4ed8;
+  --c-accent-pressed: #1e40af;
+  --c-on-accent: #ffffff;
+
+  /* status */
+  --c-success: #30a46c;
+  --c-warning: #d97706;
+  --c-danger: #dc2626;
+  --c-info: #3b82f6;
+
+  /* focus */
+  --c-focus: #4a9eff;
+
+  /* elevation (dark) */
+  --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sh-md: 0 4px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --sh-lg: 0 12px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+  /* materials */
+  --material-scrim: rgba(0, 0, 0, 0.4);
+
+  /* named z-layers (no hardcoded z-index in components) */
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-modal: 1300;
+  --z-popover: 1400;
+  --z-toast: 1500;
+}
+
+:root.light,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --c-bg-base: #ffffff;
+  --c-bg-1: #f9fafb;
+  --c-bg-2: #f3f4f6;
+
+  --c-sep: #d1d5db;
+  --c-sep-subtle: #e5e7eb;
+
+  --c-label-1: #111827;
+  --c-label-2: #374151;
+  --c-label-3: #6b7280;
+  --c-label-4: #9ca3af;
+
+  --c-fill-1: #111827;
+  --c-fill-2: #374151;
+  --c-fill-3: #6b7280;
+  --c-fill-4: #d1d5db;
+
+  --c-tint: #2563eb;
+  --c-tint-hover: #1d4ed8;
+  --c-tint-pressed: #1e40af;
+
+  --c-accent: #2563eb;
+  --c-accent-hover: #1d4ed8;
+  --c-accent-pressed: #1e40af;
+  --c-on-accent: #ffffff;
+
+  --c-success: #059669;
+  --c-warning: #d97706;
+  --c-danger: #dc2626;
+  --c-info: #2563eb;
+
+  --c-focus: #2563eb;
+
+  --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --sh-md: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --sh-lg: 0 12px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  --material-scrim: rgba(0, 0, 0, 0.2);
+}
+
+/* ── Tailwind theme mapping → semantic utilities ─────────────────────────── */
+@theme inline {
+  /* fonts — system (SF on Apple) for chrome; Anton stays available via next/font */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Monaco', 'Menlo', 'Cascadia Mono', monospace;
+
+  /* colour utilities: bg-surface / text-label / border-separator / bg-tint / text-danger … */
+  --color-surface: var(--c-bg-base);
+  --color-surface-1: var(--c-bg-1);
+  --color-surface-2: var(--c-bg-2);
+  --color-overlay: var(--c-overlay);
+
+  --color-separator: var(--c-sep);
+  --color-separator-subtle: var(--c-sep-subtle);
+
+  --color-label: var(--c-label-1);
+  --color-label-secondary: var(--c-label-2);
+  --color-label-tertiary: var(--c-label-3);
+  --color-label-quaternary: var(--c-label-4);
+
+  --color-fill: var(--c-fill-1);
+  --color-fill-secondary: var(--c-fill-2);
+  --color-fill-tertiary: var(--c-fill-3);
+  --color-fill-quaternary: var(--c-fill-4);
+
+  --color-tint: var(--c-tint);
+  --color-tint-hover: var(--c-tint-hover);
+  --color-tint-pressed: var(--c-tint-pressed);
+
+  --color-accent: var(--c-accent);
+  --color-accent-hover: var(--c-accent-hover);
+  --color-accent-pressed: var(--c-accent-pressed);
+  --color-on-accent: var(--c-on-accent);
+
+  --color-success: var(--c-success);
+  --color-warning: var(--c-warning);
+  --color-danger: var(--c-danger);
+  --color-info: var(--c-info);
+
+  --color-focus: var(--c-focus);
+
+  /* radius scale (overrides Tailwind defaults so rounded-sm/md/lg match the system) */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+
+  /* elevation scale → shadow-sm/md/lg */
+  --shadow-sm: var(--sh-sm);
+  --shadow-md: var(--sh-md);
+  --shadow-lg: var(--sh-lg);
+
+  /* motion easing → ease-out / ease-in / ease-in-out */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* type ramp → text-display / text-title1 / … / text-body / text-label */
+  --text-display: 2.5rem;       --text-display--line-height: 1.2;  --text-display--font-weight: 600; --text-display--letter-spacing: -0.015rem;
+  --text-title1: 2rem;          --text-title1--line-height: 1.2;   --text-title1--font-weight: 600;  --text-title1--letter-spacing: -0.01rem;
+  --text-title2: 1.5rem;        --text-title2--line-height: 1.2;   --text-title2--font-weight: 600;  --text-title2--letter-spacing: -0.01rem;
+  --text-title3: 1.25rem;       --text-title3--line-height: 1.3;   --text-title3--font-weight: 600;
+  --text-headline: 1.125rem;    --text-headline--line-height: 1.4; --text-headline--font-weight: 500;
+  --text-body: 1rem;            --text-body--line-height: 1.5;
+  --text-body-sm: 0.9375rem;    --text-body-sm--line-height: 1.5;
+  --text-caption: 0.875rem;     --text-caption--line-height: 1.4;
+  --text-caption-sm: 0.8125rem; --text-caption-sm--line-height: 1.4;
+  --text-label: 0.8125rem;      --text-label--line-height: 1.5;    --text-label--font-weight: 500;
+  /* micro — dense control labels in the editor (pro-tool floor, 11px). Not for body/content. */
+  --text-micro: 0.6875rem;      --text-micro--line-height: 1.35;
+}
+
+/* ── Base layer ──────────────────────────────────────────────────────────── */
+body {
+  background: var(--c-bg-base);
+  color: var(--c-label-2);            /* secondary = standard UI text; headings use text-label */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* No macOS trackpad rubber-band / overscroll bounce of the whole page (and no scroll-chaining out of
+   inner scroll areas). The editor is viewport-locked; this stops the two-finger "bounce" that reveals
+   blank space at the top/bottom. Inner regions that need to scroll still scroll — just without bounce. */
+html, body { overscroll-behavior: none; }
+
+/* Keyboard focus is always visible (2px ring, 2px offset) and never relies on colour alone.
+   The :where(...) rule with !important guarantees the ring survives utilities like
+   `outline-none` on interactive elements (AHIG: never remove focus without a replacement). */
+:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+:where(a, button, input, select, textarea, summary, [tabindex], [role='button'], [role='slider'], [role='tab'], [role='switch'], [role='menuitem']):focus-visible {
+  outline: 2px solid var(--c-focus) !important;
+  outline-offset: 2px !important;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-tint) 40%, transparent);
+  color: var(--c-label-1);
+}
+
+/* Native control accents follow the tint. */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--c-tint);
+}
+
+/* Subtle, calm press feedback (replaces the old aggressive scale(0.93)). */
+button {
+  cursor: pointer;
+  transition: transform var(--dur, 120ms) ease, opacity var(--dur, 120ms) ease;
+}
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Reduced motion: collapse all transitions/animations to ~instant. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High-res displays: the whole UI (type ramp, spacing, panel widths) is rem-based, so one root
+   font-size step scales the chrome down proportionally — denser, less chunky on a 4K/Retina panel.
+   Gated on HIGH-DPI (devicePixelRatio >= 2) — the real "4K vs 1080p" signal, since Retina reports
+   CSS px (~1512), not physical px, so a width breakpoint never matched. Standard-DPI 1080p monitors
+   (dpr 1) keep the 16px base. The wide-width arm also covers non-Retina 4K/1440p monitors. */
+@media (min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2), (min-width: 2000px) {
+  :root { font-size: 12px; }
+}
+
+/* ── Range slider (tokenised; RangeSliderSync sets --fill) ───────────────── */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, var(--c-tint) var(--fill, 50%), var(--c-sep) var(--fill, 50%));
+  border-radius: 9999px;
+  border: none;
+  outline: none;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-label-1);
+  cursor: pointer;
+  border: none;
+  box-shadow: var(--sh-sm), 0 0 0 0.5px rgba(0, 0, 0, 0.18);
+}
+input[type='range']::-webkit-slider-runnable-track {
+  background: transparent;
+  border: none;
+}
+input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-label-1);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--sh-sm), 0 0 0 0.5px rgba(0, 0, 0, 0.18);
+}
+input[type='range']::-moz-range-track {
+  background: transparent;
+  border: none;
+}
+input[type='range']::-moz-range-progress {
+  background: transparent;
+}
+
+/* Colour input swatch */
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type='color']::-webkit-color-swatch {
+  border: none;
+  border-radius: var(--radius-sm);
+}
+input[type='color']::-moz-color-swatch {
+  border: none;
+  border-radius: var(--radius-sm);
+}
+
+/* Spin keyframe — used by inline style={{ animation:'spin 1s linear infinite' }} */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Marching-ants marquee — used by the image-expansion preview. */
+.te-marching-ants {
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.95) 50%, transparent 0),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.95) 50%, transparent 0),
+    linear-gradient(0deg,  rgba(255, 255, 255, 0.95) 50%, transparent 0),
+    linear-gradient(0deg,  rgba(255, 255, 255, 0.95) 50%, transparent 0);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: te-marching-ants 0.5s linear infinite;
+}
+@keyframes te-marching-ants {
+  to { background-position: 16px 0, -16px 100%, 0 -16px, 100% 16px; }
+}

@@ -1,0 +1,18 @@
+
+# macOS
+.DS_Store
+
+# Local agent/editor state — never commit.
+CONTEXT.md
+.claude/
+.cursor/
+*.local.json
+
+# Scratch and handoff notes
+*-REVIEW-NOTES.md
+*-NOTES.md
+
+.vercel
+
+# Supabase CLI local cache
+supabase/.temp/
